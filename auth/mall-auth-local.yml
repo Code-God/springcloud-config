@@ -1,0 +1,80 @@
+spring:
+  datasource:
+    db_user:
+      url: jdbc:mysql://:3306/m_mall_user?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
+      username: 
+      password: 
+      driver-class-name:  com.mysql.jdbc.Driver
+    db_admin:
+      url: jdbc:mysql://:3306/m_mall_admin?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
+      username: 
+      password: 
+      driver-class-name:  com.mysql.jdbc.Driver
+  redis:
+    host: 
+    port: 6379
+    password: 
+  application:
+    name: mall-auth
+
+mybatis:
+  type-aliases-package: com.cc.core.domain
+  mapper-locations: classpath:mapper/*Mapper.xml
+  global-config:
+    refresh-mapper: true
+
+#服务器配置
+server:
+  #端口
+  port: 8020
+#  context-path: /uaa #访问上下文
+
+eureka-ip: localhost
+gateway-ip: localhost
+
+#服务器发现注册配置
+eureka:
+  client:
+    serviceUrl:
+      #配置服务中心(可配置多个,用逗号隔开)
+      defaultZone: http://cc:mft123@${eureka-ip}:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+#安全配置
+security:
+  #oauth2配置
+  oauth2:
+    client:
+      client-id: mft_client
+      client-secret: K2QzPPz3fqQNEnsbwupD1b1IDPPg0RfkdWalXysL7w1
+      grant-type: client_credentials
+    password:
+      client-id: mft_password
+      client-secret: K2QzPPz3fqQNEnsbwupD1b1IDPPg0RfkdWalXysL7w2
+      grant-type: password
+    resource:
+      filter-order: 3
+
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: INFO
+
+init-db: true
+#txmanager地址
+tm:
+  manager:
+    url: http://${gateway-ip}:8100/txmanager/tx/manager/
+
+##Ribbon的负载均衡策略
+ribbon:
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+  MaxAutoRetriesNextServer: 0
+
+
+bucket_name: 
+oss_access_key_id: 
+oss_access_key_secret: 
+

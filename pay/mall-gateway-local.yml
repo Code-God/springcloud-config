@@ -1,0 +1,116 @@
+spring:
+  redis:
+    host: 
+    port: 6379
+    password: meifute@123
+  http:
+    multipart:
+      max-file-size: 100MB # 单个文件大小
+      max-request-size: 100MB # 设置总上传的数据大小
+      enabled: true #开启
+
+eureka-ip: localhost
+gateway-ip: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://meifute:mft123@${eureka-ip}:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+zuul:
+  routes:
+    feign-auth:
+      path: /auth/**
+      serviceId: mall-auth
+      strip-prefix: true
+      custom-sensitive-headers: true
+    feign-user:
+      path: /${zuul.model-user}/**
+      serviceId: mall-user
+      sensitiveHeaders:
+    feign-order:
+      path: /${zuul.model-order}/**
+      serviceId: mall-order
+      sensitiveHeaders:
+    feign-notify:
+      path: /notify/**
+      serviceId: mall-notify
+      sensitiveHeaders:
+    feign-item:
+      path: /item/**
+      serviceId: mall-item
+      sensitiveHeaders:
+    feign-admin:
+      path: /admin/**
+      serviceId: mall-admin
+      sensitiveHeaders:
+    feign-pay:
+      path: /pay/**
+      serviceId: mall-pay
+      sensitiveHeaders:
+    feign-agent:
+      path: /agent/**
+      serviceId: mall-agent
+      sensitiveHeaders:
+    feign-txmanager:
+      path: /txmanager/**
+      serviceId: tx-manager
+      sensitiveHeaders:
+    feign-data-user:
+      path: /data/**
+      serviceId: mall-data-user
+      sensitiveHeaders:
+    feign-task:
+      path: /task/**
+      serviceId: mall-task
+      sensitiveHeaders:
+    feign-report:
+      path: /report/**
+      serviceId: mall-report
+      sensitiveHeaders:
+    feign-cost:
+      path: /cost/**
+      serviceId: mall-cost
+      sensitiveHeaders:
+    feign-pm:
+      path: /pm/**
+      serviceId: mall-pm
+      sensitiveHeaders:
+
+  model-user: user
+  model-order: order
+  model-admin: admin
+
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: INFO
+
+security:
+  oauth2:
+    client:
+      access-token-uri: http://${gateway-ip}:${server.port}/auth/oauth/token
+      user-authorization-uri: http://${gateway-ip}0:${server.port}/auth/oauth/authorize
+      client-id: meifute
+    resource:
+      user-info-uri: http://${gateway-ip}:${server.port}/auth/user
+      prefer-token-info: false
+
+ribbon:
+  ReadTimeout: 600000
+  SocketTimeout: 600000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+feign:
+  hystrix:
+    enabled: true
+
